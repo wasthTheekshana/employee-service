@@ -1,0 +1,1 @@
+export const MONGO_CONNECTIONS ="mongodb+srv://wasaththeek:wasath23@employee.cu1w7.mongodb.net/ems?retryWrites=true&w=majority"
