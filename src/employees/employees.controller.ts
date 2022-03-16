@@ -15,13 +15,13 @@ export class EmployeesController {
 
     @Get()
     @UsePipes(ValidationPipe)
-    getAllEmployee(@Query() param : EmployeeSearchDto){
+   async getAllEmployee(@Query() param : EmployeeSearchDto): Promise<Employee[]> {
         //todo: implement
-        if(Object.keys(param).length){
-           return this.employees.employeeSearch(param);
-        }else{
-            return this.employees.getAllEmployees()
-        }
+        // if(Object.keys(param).length){
+        //    return this.employees.employeeSearch(param);
+        // }else{
+        //     return this.employees.getAllEmployees()
+        // }
 
         /** Do not do  this way  */
         // if(param)){
@@ -32,26 +32,28 @@ export class EmployeesController {
         //     console.log("no Filter")
         //     return this.employees.getAllEmployees()
         // }
+
+        return await this.employees.getAllEmployees();
       
     }
       
     @Post()
     @UsePipes(ValidationPipe)
     @UsePipes(new EmployeeTierValidationPipe)
-    createEmployee(@Body() employeeCreateDto: EmployeeCreateDto,): Employee{
+    createEmployee(@Body() employeeCreateDto: EmployeeCreateDto,): Promise<Employee>{
 
      return this.employees.createEmployee(employeeCreateDto);
     }
 
-    @Get('/:id')
-    getEmployeeById(@Param('id') id: string): Employee{
-        return this.employees.getEmployeeById(id);
-    }
+    // @Get('/:id')
+    // getEmployeeById(@Param('id') id: string): Employee{
+    //     return this.employees.getEmployeeById(id);
+    // }
 
-    @Put('/:id/city')
-    updateEmployee(@Param('id') id: string, @Body() body:EmployeeUpdateDto){
-        body.id = id;
-       return this.employees.updateEmployee(body);
-    }
+    // @Put('/:id/city')
+    // updateEmployee(@Param('id') id: string, @Body() body:EmployeeUpdateDto){
+    //     body.id = id;
+    //    return this.employees.updateEmployee(body);
+    // }
 
 }

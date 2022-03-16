@@ -8,11 +8,18 @@ import { EmployeeCreateDto } from "./EmployeeCreate.dto";
 @Injectable()
 export class EmployeeRepository {
 
-    constructor(@InjectModel(Employee.name),private employeeModel: Model<EmployeeDocument>){
+    constructor(@InjectModel(Employee.name) private employeeModel: Model<EmployeeDocument>){
 
     }
 
     async create(createEmployeeDto: EmployeeCreateDto): Promise<Employee>{
+        
+        let newEmployee = new this.employeeModel(createEmployeeDto);
+        return await newEmployee.save();
 
+    }
+
+    async findAll(): Promise<Employee[]>{
+        return await this.employeeModel.find();
     }
 }

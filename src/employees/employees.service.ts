@@ -6,78 +6,84 @@ import { EmployeeSearchDto } from './EmployeeSearch.dto';
 import { EmployeeUpdateDto } from './EmployeeUpdate.dto';  
 import { EmployeeCreateDto } from './EmployeeCreate.dto';
 import { Employee } from './schema/Employee.schema';
+import { EmployeeRepository } from './Employee.repository';
 
 @Injectable()
 export class EmployeesService {
 
+    constructor(private employeeRepository: EmployeeRepository){
+
+    }
+
     private employees : Employee[] = []
 
-    getAllEmployees(){
-        return this.employees;
+    async getAllEmployees():Promise<Employee[]>{
+        // return this.employees;
+        return await this.employeeRepository.findAll();
     }
 
-    createEmployee(employeeCreateDto: EmployeeCreateDto){
+   async createEmployee(employeeCreateDto: EmployeeCreateDto): Promise<Employee>{
 
-        const{
-            firstName,
-            lastName,
-            designation,
-            nearestCity,
-            tires,
-        } = employeeCreateDto
+        // const{
+        //     firstName,
+        //     lastName,
+        //     designation,
+        //     nearestCity,
+        //     tires,
+        // } = employeeCreateDto
 
-        const employe = {
-            id: uuid(),
-            firstName,
-            lastName,
-            designation,
-            nearestCity,
-            tires,
-            status:EmployeeStatus.ACTIVE
-        }
+        // const employe = {
+        //     id: uuid(),
+        //     firstName,
+        //     lastName,
+        //     designation,
+        //     nearestCity,
+        //     tires,
+        //     status:EmployeeStatus.ACTIVE
+        // }
 
-        this.employees.push(employe);
-        return employe 
-
-    }
-
-    employeeSearch(employeeSearchDto: EmployeeSearchDto){
-
-        const {status,name} = employeeSearchDto;
-        let employees = this.getAllEmployees();
-
-        if(status){
-            employees = employees.filter(employee => employee.status === status)
-            console.log(employees)
-        }
-        if(name){
-            employees = employees.filter(employee => employee.firstName.includes(name) || employee.lastName.includes(name))
-        }
-
-        return employees;
-
+       // this.employees.push(employe);
+        return await this.employeeRepository.create(employeeCreateDto)
 
     }
 
-    getEmployeeById(id:string) :Employee {
+    // employeeSearch(employeeSearchDto: EmployeeSearchDto){
 
-        const employees = this.getAllEmployees();
-         let employee = employees.find(employee => employee.id ==id);
+    //     const {status,name} = employeeSearchDto;
+    //     let employees = this.getAllEmployees();
 
-         if(!(employee)){
-            throw new NotFoundException(`${id} does not exist`);
-         }
-        return employee;
-    }
+    //     if(status){
+    //         employees = employees.filter(employee => employee.status === status)
+    //         console.log(employees)
+    //     }
+    //     if(name){
+    //         employees = employees.filter(employee => employee.firstName.includes(name) || employee.lastName.includes(name))
+    //     }
+
+    //     return employees;
 
 
-updateEmployee(employeeUpdateDto :EmployeeUpdateDto) : Employee {
+    // }
 
-    const{id,city} = employeeUpdateDto;
+    // getEmployeeById(id:string) :Employee {
 
-    let employees = this.getEmployeeById(id);
+    //     const employees = this.getAllEmployees();
+    //      let employee = employees.find(employee => employee.id ==id);
 
-    employees.nearestCity=city;
-    return employees;
-}
+    //      if(!(employee)){
+    //         throw new NotFoundException(`${id} does not exist`);
+    //      }
+    //     return employee;
+    // }
+
+
+// updateEmployee(employeeUpdateDto :EmployeeUpdateDto) : Employee {
+
+//     const{id,city} = employeeUpdateDto;
+
+//     let employees = this.getEmployeeById(id);
+
+//     employees.nearestCity=city;
+//     return employees;
+// }
 }
